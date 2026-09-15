@@ -1,16 +1,32 @@
 const numeroSenha = document.querySelector('.parametro-senha__texto');
-const botoes = document.querySelectorAll('.parametro-senha__botao');
-
 let tamanhoSenha = 12;
 numeroSenha.textContent = tamanhoSenha;
+const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz';
+const numeros = '0123456789';
+const simbolos = '!@%*?#¨&+-.';
+const botoes = document.querySelectorAll('.parametro-senha__botao');
+const campoSenha = document.querySelector('#campo-senha');
+const botaoGerarSenha = document.querySelector('#botao-gerar-senha');
+const checkbox = document.querySelectorAll('.checkbox');
+const forcaSenha = document.querySelector('.forca');
+
+function classificaSenha(){
+    forcaSenha.classList.remove('fraca','media','forte');
+    if (tamanhoSenha > 11){
+        forcaSenha.classList.add('forte');
+    } else if (tamanhoSenha > 5 && tamanhoSenha < 12 ) {
+        forcaSenha.classList.add('media');
+    } else if (tamanhoSenha <= 5){
+        forcaSenha.classList.add('fraca');
+    }
+}
 
 botoes[0].onclick = diminuiTamanho;
 botoes[1].onclick = aumentaTamanho;
 
-
 function diminuiTamanho(){
     if (tamanhoSenha > 1){
-       // tamanhoSenha = tamanhoSenha-1;
         tamanhoSenha--;
     }
     numeroSenha.textContent = tamanhoSenha;
@@ -19,19 +35,11 @@ function diminuiTamanho(){
 
 function aumentaTamanho(){
     if (tamanhoSenha < 20){
-       // tamanhoSenha = tamanhoSenha+1;
-       tamanhoSenha++;
+        tamanhoSenha++;
     }
     numeroSenha.textContent = tamanhoSenha;
     geraSenha();
 }
-
-const campoSenha = document.querySelector('#campo-senha');
-const checkbox = document.querySelectorAll('.checkbox');
-const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
-const numeros = '0123456789';
-const simbolos = '!@%*?#¨&+-.';
 
 function geraSenha(){
     let alfabeto = '';
@@ -61,6 +69,14 @@ function geraSenha(){
     }
 
     campoSenha.value = senha;
+    classificaSenha();
 }
+
+botaoGerarSenha.addEventListener('click', geraSenha);
+
+// Adicionar event listeners aos checkboxes
+checkbox.forEach(check => {
+    check.addEventListener('change', geraSenha);
+});
 
 geraSenha();
